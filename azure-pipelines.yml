@@ -1,19 +1,18 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
-trigger:
-- main
-
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest' # Adjust VM image if needed
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+stages:
+- stage: Build
+  jobs:
+  - job: Build_Job
+    steps:
+    - task: Maven@3 # Use the appropriate Maven version task
+      inputs:
+        mavenVersionOption: 'Default' # Use default Maven version provided by the task
+        mavenPomFile: 'pom.xml' # Path to your pom.xml file
+        goals: 'clean package' # Maven goals to execute (clean and package)
+        publishJUnitResults: true # Optionally publish JUnit test results
+        javaHomeOption: 'JDKVersion' # Specify the JDK version
+        jdkVersionOption: '1.8' # Adjust this based on your project's requirements
+        jdkArchitectureOption: 'x64' # Specify the architecture
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
